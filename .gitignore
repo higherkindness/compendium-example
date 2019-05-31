@@ -1,0 +1,34 @@
+*.class
+*.log
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+project/target
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+
+# ENSIME specific
+.ensime_cache/
+.ensime
+
+# IDEA Specific
+.idea/
+*.iws
+/out/
+.idea_modules/
+
+# metals
+.metals/
+project/.bloop/
+
+.DS_Store
