@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package muServerImpl;
+
+message Contact {
+  string name = 1;
+  string surname = 2;
+}
+
+
+
