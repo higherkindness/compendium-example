@@ -29,6 +29,186 @@
     [Interpreter](http://pepegar.com/hammock/interpreters.html) needed.
     Client configuration needed `CompendiumClientConfig` need to be specified with host and port to sent the requests. By default server has `localhost:8080`.
 
+## Model example
 
 
+Client:
 
+    {
+      "type": "record",
+      "name": "Client",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "surname",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "type": "string"
+        }
+      ]
+    }
+
+Supplier:
+
+    {
+      "type": "record",
+      "name": "Supplier",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "type": "string"
+        },
+        {
+            "name": "phone",
+            "type": "string"
+        }
+      ]
+    }
+
+
+Product #1:
+
+    {
+      "type": "record",
+      "name": "Product",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "creationDate",
+            "type": "string"
+        }
+      ]
+    }
+
+
+Product #2:
+
+    {
+      "type": "record",
+      "name": "Product",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "creationDate",
+            "type": "string"
+        },
+        {
+            "name": "expireDate",
+            "type": "string"
+        }
+      ]
+    }
+
+Sale:
+
+    {
+      "type": "record",
+      "name": "Sale",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "client",
+            "type": "higherkindness.compendiumtest.Client"
+        },
+        {
+            "name": "product",
+            "type": "higherkindness.compendiumtest.Product"
+        }
+      ]
+    }
+
+Material #1:
+
+    {
+      "type": "record",
+      "name": "Material",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "code",
+            "type": "string"
+        },
+        {
+            "name": "shipId",
+            "type": "string"
+        }
+      ]
+    }
+
+Material #2:
+
+
+    {
+      "type": "record",
+      "name": "Material",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "code",
+            "type": "string"
+        },
+        {
+            "name": "originIdentifier",
+            "type": "higherkindness.compendiumtest.Supplier"
+        },    
+        {
+            "name": "shipId",
+            "type": "string"
+        }
+      ]
+    }
+
+Process:
+
+    {
+      "type": "record",
+      "name": "Process",
+      "namespace": "higherkindness.compendiumtest",
+      "fields": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "mat",
+            "type": {
+                "type": "array",
+                "items": "higherkindness.compendiumtest.Material"
+            }
+        },
+        {
+            "name": "prod",
+            "type": "higherkindness.compendiumtest.Product"
+        }
+      ]
+    }
+
+
+[From json to string Converter](https://tools.knowledgewalls.com/jsontostring)

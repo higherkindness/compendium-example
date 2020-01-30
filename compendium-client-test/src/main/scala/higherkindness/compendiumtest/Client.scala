@@ -7,17 +7,17 @@ import higherkindness.compendium.models.config.{
   CompendiumClientConfig,
   HttpConfig
 }
-import pureconfig.ConfigSource
-import pureconfig.generic.auto._
+import higherkindness.compendiumtest.config.Config
 
 object Client {
 
-  val config = ConfigSource.default.load[CompendiumClientConfig].toOption
-
-  def apply[F[_]: Sync](): CompendiumClient[F] = {
-    implicit val compendiumClient =
-      config.getOrElse(CompendiumClientConfig(HttpConfig("localhost", 8080)))
+  def apply[F[_]: Sync]()(
+    implicit config: Option[Config]
+  ): CompendiumClient[F] = {
+    implicit val conf = config
+      .map(_.httpClientConfig)
+      .getOrElse(CompendiumClientConfig(HttpConfig("localhost", 8080)))
     implicit val interpreter = ApacheInterpreter.instance[F]
-    CompendiumClient[F]
+    CompendiumClient[F]()
   }
 }

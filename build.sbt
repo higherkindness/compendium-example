@@ -1,62 +1,119 @@
-import sbt.addCompilerPlugin
+import cats.effect.IO
+import higherkindness.compendium.models.IdlName
+import sbt.Keys.version
+import sbtcompendium.CompendiumUtils
 
 lazy val version = new {
-    val compendiumVersion = "0.0.1-SNAPSHOT"
-    val cats: String             = "2.1.0"
-    val catseffect: String             = "2.0.0"
-    val log4cats = "0.3.0"
-    val logbackClassic = "1.2.3"
-    val hammock: String          = "0.10.0"
-    val pureConfig: String = "0.12.2"
+  val compendiumVersion = "0.0.1-SNAPSHOT"
+  val cats: String = "2.1.0"
+  val catseffect: String = "2.0.0"
+  val log4cats = "0.3.0"
+  val logbackClassic = "1.2.3"
+  val hammock: String = "0.10.0"
+  val pureConfig: String = "0.12.2"
 }
 lazy val logSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq(
-        "ch.qos.logback" % "logback-classic" % version.logbackClassic,
-        "io.chrisdavenport" %% "log4cats-core" % version.log4cats,
-        "io.chrisdavenport" %% "log4cats-slf4j" % version.log4cats
-    )
+  libraryDependencies ++= Seq(
+    "ch.qos.logback" % "logback-classic" % version.logbackClassic,
+    "io.chrisdavenport" %% "log4cats-core" % version.log4cats,
+    "io.chrisdavenport" %% "log4cats-slf4j" % version.log4cats
+  )
 )
 
-lazy val configSettings = Seq(libraryDependencies ++= Seq(
+lazy val configSettings = Seq(
+  libraryDependencies ++= Seq(
     "com.github.pureconfig" %% "pureconfig" % version.pureConfig
-))
+  )
+)
 
-lazy val catsSettings = Seq(libraryDependencies ++= Seq(
+lazy val catsSettings = Seq(
+  libraryDependencies ++= Seq(
     "org.typelevel" %% "cats-core" % version.cats,
-    "org.typelevel" %% "cats-effect" % version.catseffect))
+    "org.typelevel" %% "cats-effect" % version.catseffect
+  )
+)
 
-lazy val compendiumClientSettings = Seq(libraryDependencies ++= Seq(
+lazy val compendiumClientSettings = Seq(
+  libraryDependencies ++= Seq(
     "io.higherkindness" %% "compendium-client" % version.compendiumVersion,
-    "com.pepegar" %% "hammock-core"            % version.hammock,
-    "com.pepegar" %% "hammock-apache-http" % version.hammock))
+    "com.pepegar" %% "hammock-core" % version.hammock,
+    "com.pepegar" %% "hammock-asynchttpclient" % version.hammock,
+    "com.pepegar" %% "hammock-apache-http" % version.hammock
+  )
+)
 
-lazy val compendiumServerSettings = Seq(libraryDependencies ++= Seq(
-    "io.higherkindness" %% "compendium-common" % version.compendiumVersion
-    //"io.higherkindness" %% "compendium-server" % version.compendiumVersion
-    // addSbtPlugin("io.higherkindness" %% "sbt-compendium" % version.compendiumVersion)
-))
-
-lazy val root = (project in file("."))
+/*lazy val root = (project in file("."))
   .settings(
     organization := "higherkindness",
     name := "compendium-test", //version := "0.0.1-SNAPSHOT",
     scalaVersion := "2.12.10",
     scalacOptions ++= Seq("-Ypartial-unification")
   )
+ */
 
 lazy val client: Project = project
-        .in(file("compendium-client-test"))
-                .settings(logSettings)
-                .settings(configSettings)
-                .settings(catsSettings)
-                .settings(compendiumClientSettings)
+  .in(file("compendium-client-test"))
+  .settings(logSettings)
+  .settings(configSettings)
+  .settings(catsSettings)
+  .settings(compendiumClientSettings)
+  .settings(
+    organization := "higherkindness",
+    name := "compendium-test",
+    scalaVersion := "2.12.10",
+    scalacOptions ++= Seq("-Ypartial-unification")
+  )
 
-scalacOptions ++= Seq(
-  "-deprecation",
-  "-encoding", "UTF-8",
-  "-language:higherKinds",
-  "-language:postfixOps",
-  "-feature",
-  "-Ypartial-unification",
-  "-Xfatal-warnings",
-)
+
+lazy val plugin: Project = project
+  .enablePlugins(CompendiumPlugin)
+  .in(file("plugin"))
+  .settings(logSettings)
+  .settings(catsSettings)
+  .settings(libraryDependencies += "io.higherkindness" %% "sbt-compendium-client" % "0.0.1-SNAPSHOT")
+  .settings(
+    compendiumProtocolIdentifiers := List("a"),
+    compendiumServerHost := "localhost",
+    compendiumServerPort := 8080,
+    sourceGenerators in Compile += Def.task {
+      compendiumGenClients.value
+    }.taskValue
+      /*,
+      compendiumGenClients := {
+
+        val generateProtocols = compendiumProtocolIdentifiers.value.toList.map { protocolId =>
+            val targetFile       = (sbt.Keys.sourceManaged in Compile).value / "compendium" / s"$protocolId.scala"
+            val generateProtocol = CompendiumUtils.generateCodeFor(protocolId, targetFile, generateClient)
+            generateProtocol
+        }
+
+        //val (_, generated) = generateProtocols.separate
+
+        //generated
+        generateProtocols.flatMap(_.toOption)
+    }*/
+  )
+  .settings(
+    organization := "higherkindness",
+    name := "compendium-test",
+    scalaVersion := "2.12.10",
+
+      scalacOptions ++= Seq(
+          "-deprecation",
+          "-encoding", "UTF-8",
+          "-language:higherKinds",
+          "-language:postfixOps",
+          "-feature",
+          "-Ypartial-unification",
+          "-Xfatal-warnings",
+      )
+  )
+/*def generateClient(target: IdlName, identifier: String): IO[String] =
+    IO(
+        """
+    package higherkindness.compendium.storage
+    object TestFile extends App {
+      println("Hey")
+    }
+    """.stripMargin
+    )*/
