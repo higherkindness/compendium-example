@@ -43,6 +43,10 @@ lazy val compendiumClientSettings = Seq(
   )
 )
 
+lazy val pluginExampleSettings = Seq(
+    libraryDependencies += "com.nrinaudo" %% "kantan.csv" % "0.6.0"
+)
+
 /*lazy val root = (project in file("."))
   .settings(
     organization := "higherkindness",
@@ -70,35 +74,21 @@ lazy val plugin: Project = project
   .enablePlugins(CompendiumPlugin)
   .in(file("plugin"))
   .settings(logSettings)
+  .settings(pluginExampleSettings)
   .settings(catsSettings)
-  .settings(libraryDependencies += "io.higherkindness" %% "sbt-compendium-client" % "0.0.1-SNAPSHOT")
   .settings(
-    compendiumProtocolIdentifiers := List("product"),
+    compendiumProtocolIdentifiers := List("product","supplier"),
     compendiumServerHost := "localhost",
     compendiumServerPort := 8080,
+    compendiumFormatSchema:="avro",
     sourceGenerators in Compile += Def.task {
       compendiumGenClients.value
     }.taskValue
-      /*,
-      compendiumGenClients := {
-
-        val generateProtocols = compendiumProtocolIdentifiers.value.toList.map { protocolId =>
-            val targetFile       = (sbt.Keys.sourceManaged in Compile).value / "compendium" / s"$protocolId.scala"
-            val generateProtocol = CompendiumUtils.generateCodeFor(protocolId, targetFile, generateClient)
-            generateProtocol
-        }
-
-        //val (_, generated) = generateProtocols.separate
-
-        //generated
-        generateProtocols.flatMap(_.toOption)
-    }*/
   )
   .settings(
     organization := "higherkindness",
     name := "compendium-test",
     scalaVersion := "2.12.10",
-
       scalacOptions ++= Seq(
           "-deprecation",
           "-encoding", "UTF-8",
@@ -109,12 +99,3 @@ lazy val plugin: Project = project
           "-Xfatal-warnings",
       )
   )
-/*def generateClient(target: IdlName, identifier: String): IO[String] =
-    IO(
-        """
-    package higherkindness.compendium.storage
-    object TestFile extends App {
-      println("Hey")
-    }
-    """.stripMargin
-    )*/

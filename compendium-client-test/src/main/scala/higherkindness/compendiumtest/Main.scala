@@ -26,9 +26,9 @@ object Main extends IOApp {
     for {
       _ <- logger.info("Current version configuration")
       _ <- logger.info("\t" + conf)
-      cliProto <- Client[IO]
+      protocol <- Client[IO]
         .retrieveProtocol("product", conf.map(_.schemaVersion.product))
-      _ <- logger.debug("Retrieved: " + cliProto.map(a => handleAvro(a.raw)))
+      _ = protocol.map(p => handleAvro(p.raw))
       _ <- logger.debug("File created! Look on target/generated-sources")
     } yield ExitCode.Success
 

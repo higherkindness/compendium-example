@@ -24,10 +24,35 @@
     Import collection on `src/main/resources/compendium.postman_collection.json`. Please notice this has `localhost:8080` as a default host for compendium server.
     POST calls has to give a **string** with the whole schema. It wil be parsed internally.
 
-- Client library
+- sbt plugin
 
-    [Interpreter](http://pepegar.com/hammock/interpreters.html) needed.
-    Client configuration needed `CompendiumClientConfig` need to be specified with host and port to sent the requests. By default server has `localhost:8080`.
+    Add to your `project/plugin.sbt` file the following line
+
+    `addSbtPlugin("io.higherkindness" %% "sbt-compendium" % "0.0.1-SNAPSHOT")`
+
+    Also to your `build.sbt` file add to your project settings
+
+    `.settings(
+        compendiumProtocolIdentifiers := List("product"),
+        compendiumServerHost := "localhost",
+        compendiumServerPort := 8080,
+        compendiumFormatSchema:="avro",
+        sourceGenerators in Compile += Def.task {
+          compendiumGenClients.value
+        }.tapendiumServerPort := 8080,
+        compendiumFormatSchema:="proto",
+        sourceGenerators in Compile += Def.task {
+          compendiumGenClients.value
+        }.taskValue
+    )`
+
+    The configuration works as follow:
+
+    - compendiumServerHost: String. Url of the compendium server. Default: "localhost"
+    - compendiumServerPort: Integer. Port of the compendium server. Default: 47047
+    - compendiumFormatSchema: String. Schema type to download. Default: "avro". Valid values: "avro", "proto".
+    - compendiumProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
+
 
 ## Model example
 
@@ -39,6 +64,10 @@ Client:
       "name": "Client",
       "namespace": "higherkindness.compendiumtest",
       "fields": [
+        {
+            "name": "id_client",
+            "type": "string"
+        },  
         {
             "name": "name",
             "type": "string"
@@ -61,6 +90,10 @@ Supplier:
       "name": "Supplier",
       "namespace": "higherkindness.compendiumtest",
       "fields": [
+        {
+            "name": "id_supplier",
+            "type": "string"
+        }, 
         {
             "name": "name",
             "type": "string"
@@ -85,11 +118,19 @@ Product #1:
       "namespace": "higherkindness.compendiumtest",
       "fields": [
         {
-            "name": "name",
+            "name": "id_prod",
             "type": "string"
         },
         {
-            "name": "creationDate",
+            "name": "description",
+            "type": "string"
+        },    
+        {
+            "name": "color",
+            "type": "string"
+        },
+        {
+            "name": "size",
             "type": "string"
         }
       ]
@@ -108,11 +149,15 @@ Product #2:
             "type": "string"
         },
         {
-            "name": "creationDate",
+            "name": "color",
             "type": "string"
         },
         {
-            "name": "expireDate",
+            "name": "size",
+            "type": "string"
+        },
+        {
+            "name": "soldDate",
             "type": "string"
         }
       ]
