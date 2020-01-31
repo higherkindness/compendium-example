@@ -38,7 +38,8 @@ lazy val compendiumClientSettings = Seq(
     "io.higherkindness" %% "compendium-client" % version.compendiumVersion,
     "com.pepegar" %% "hammock-core" % version.hammock,
     "com.pepegar" %% "hammock-asynchttpclient" % version.hammock,
-    "com.pepegar" %% "hammock-apache-http" % version.hammock
+    "com.pepegar" %% "hammock-apache-http" % version.hammock,
+    "com.julianpeeters"               %% "avrohugger-core" % "1.0.0-RC22"
   )
 )
 
@@ -72,7 +73,7 @@ lazy val plugin: Project = project
   .settings(catsSettings)
   .settings(libraryDependencies += "io.higherkindness" %% "sbt-compendium-client" % "0.0.1-SNAPSHOT")
   .settings(
-    compendiumProtocolIdentifiers := List("a"),
+    compendiumProtocolIdentifiers := List("product"),
     compendiumServerHost := "localhost",
     compendiumServerPort := 8080,
     sourceGenerators in Compile += Def.task {
