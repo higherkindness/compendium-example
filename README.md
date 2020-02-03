@@ -57,7 +57,7 @@
 ## Model example
 
 
-Client:
+Client schema:
 
     {
       "type": "record",
@@ -83,7 +83,7 @@ Client:
       ]
     }
 
-Supplier:
+Supplier schema:
 
     {
       "type": "record",
@@ -110,7 +110,7 @@ Supplier:
     }
 
 
-Product #1:
+Product schema #1:
 
     {
       "type": "record",
@@ -137,7 +137,7 @@ Product #1:
     }
 
 
-Product #2:
+Product schema #2:
 
     {
       "type": "record",
@@ -163,7 +163,7 @@ Product #2:
       ]
     }
 
-Sale:
+Sale schema:
 
     {
       "type": "record",
@@ -181,7 +181,7 @@ Sale:
       ]
     }
 
-Material #1:
+Material schema #1:
 
     {
       "type": "record",
@@ -225,6 +225,10 @@ Material #2:
         },    
         {
             "name": "shipId",
+            "type": "string"
+        },    
+        {
+            "name": "color",
             "type": "string"
         }
       ]

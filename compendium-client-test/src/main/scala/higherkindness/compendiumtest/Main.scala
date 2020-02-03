@@ -12,6 +12,7 @@ import io.chrisdavenport.log4cats.slf4j.Slf4jLogger
 import pureconfig.ConfigSource
 
 import cats.implicits._
+import avrohugger.types._
 
 //sbt "project client" run
 object Main extends IOApp {
@@ -21,14 +22,23 @@ object Main extends IOApp {
     val logger: SelfAwareStructuredLogger[IO] = Slf4jLogger.getLogger
 
     def handleAvro(raw: String) =
-      Generator(Standard).stringToFile(raw)
+      Generator(Standard, Some(Standard.defaultTypes.copy(protocol = ScalaADT)))
+        .stringToFile(raw)
 
     for {
       _ <- logger.info("Current version configuration")
       _ <- logger.info("\t" + conf)
       protocol <- Client[IO]
-        .retrieveProtocol("product", conf.map(_.schemaVersion.product))
+        .retrieveProtocol("sale", None)
       _ = protocol.map(p => handleAvro(p.raw))
+      - <- logger.info(
+        "String format:" +
+          Generator(
+            Standard,
+            Some(Standard.defaultTypes.copy(protocol = ScalaADT))
+          ).stringToStrings(protocol.get.raw)
+            .mkString("\n")
+      )
       _ <- logger.debug("File created! Look on target/generated-sources")
     } yield ExitCode.Success
 

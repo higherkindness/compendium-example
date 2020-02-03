@@ -8,8 +8,8 @@ import kantan.csv.RowDecoder
 
 trait Reader[T] {
 
-  def read[F[_]: Sync](fileName: String)(implicit logger: Logger[F],
-                                         decode: RowDecoder[T]): F[List[T]] =
+  def read[T, F[_]: Sync](fileName: String)(implicit logger: Logger[F],
+                                            decode: RowDecoder[T]): F[List[T]] =
     Sync[F].delay(
       getClass
         .getResource(fileName)

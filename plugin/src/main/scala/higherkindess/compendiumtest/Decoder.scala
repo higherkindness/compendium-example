@@ -1,6 +1,6 @@
 package higherkindess.compendiumtest
 
-import higherkindness.compendiumtest.{Product, Supplier}
+import higherkindness.compendiumtest._
 import kantan.csv.RowDecoder
 
 object Decoder {
@@ -13,5 +13,22 @@ object Decoder {
   implicit val supplierDecoder: RowDecoder[Supplier] = RowDecoder.ordered {
     (id: String, name: String, email: String, phone: String) =>
       Supplier(id, name, email, phone)
+  }
+
+  implicit val materialDecoder: RowDecoder[Material] = RowDecoder.ordered {
+    (name: String, code: String, shipId: String) =>
+      Material(name, code, shipId)
+  }
+
+  implicit val saleDecoder: RowDecoder[Sale] = RowDecoder.ordered {
+    (ic: String,
+     n: String,
+     sn: String,
+     em: String,
+     ipr: String,
+     d: String,
+     c: String,
+     si: String) =>
+      Sale(Client(ic, n, sn, em), Product(ipr, d, c, si))
   }
 }

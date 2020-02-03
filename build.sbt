@@ -77,7 +77,7 @@ lazy val plugin: Project = project
   .settings(pluginExampleSettings)
   .settings(catsSettings)
   .settings(
-    compendiumProtocolIdentifiers := List("product","supplier"),
+    compendiumProtocolIdentifiers := List("supplier","material","sale"),
     compendiumServerHost := "localhost",
     compendiumServerPort := 8080,
     compendiumFormatSchema:="avro",
