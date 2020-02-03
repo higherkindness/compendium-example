@@ -47,32 +47,10 @@ lazy val pluginExampleSettings = Seq(
     libraryDependencies += "com.nrinaudo" %% "kantan.csv" % "0.6.0"
 )
 
-/*lazy val root = (project in file("."))
-  .settings(
-    organization := "higherkindness",
-    name := "compendium-test", //version := "0.0.1-SNAPSHOT",
-    scalaVersion := "2.12.10",
-    scalacOptions ++= Seq("-Ypartial-unification")
-  )
- */
 
-lazy val client: Project = project
-  .in(file("compendium-client-test"))
-  .settings(logSettings)
-  .settings(configSettings)
-  .settings(catsSettings)
-  .settings(compendiumClientSettings)
-  .settings(
-    organization := "higherkindness",
-    name := "compendium-test",
-    scalaVersion := "2.12.10",
-    scalacOptions ++= Seq("-Ypartial-unification")
-  )
-
-
-lazy val plugin: Project = project
+lazy val avroExample: Project = project
   .enablePlugins(CompendiumPlugin)
-  .in(file("plugin"))
+  .in(file("avroExample"))
   .settings(logSettings)
   .settings(pluginExampleSettings)
   .settings(catsSettings)

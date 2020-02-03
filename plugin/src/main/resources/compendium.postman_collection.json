@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "ec001fc7-0077-4d96-a79e-dff653d512a1",
+		"name": "compendium",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "store a schema",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"raw\" : \"{\\\"namespace\\\":\\\"correct.avro\\\",\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"User\\\",\\\"fields\\\":[{\\\"name\\\":\\\"name\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"age\\\",\\\"type\\\":\\\"int\\\"},{\\\"name\\\":\\\"address\\\",\\\"type\\\":[\\\"string\\\",\\\"null\\\"]}]}\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{compendium_local}}/v0/protocol/a?idlName=avro",
+					"host": [
+						"{{compendium_local}}"
+					],
+					"path": [
+						"v0",
+						"protocol",
+						"a"
+					],
+					"query": [
+						{
+							"key": "idlName",
+							"value": "avro"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a schema",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{compendium_local}}/v0/protocol/a?version=1",
+					"host": [
+						"{{compendium_local}}"
+					],
+					"path": [
+						"v0",
+						"protocol",
+						"a"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compendium GET - transform",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{compendium_local}}/v0/protocol/a/transformation?target=avro",
+					"host": [
+						"{{compendium_local}}"
+					],
+					"path": [
+						"v0",
+						"protocol",
+						"a",
+						"transformation"
+					],
+					"query": [
+						{
+							"key": "target",
+							"value": "avro"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "compendium health check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{compendium_local}}/health",
+					"host": [
+						"{{compendium_local}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e7854840-940f-4e84-bbc4-50004ba7d7ae",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d361e86a-3e31-43d5-9851-e31b192e3c6e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0062750c-cec4-4a19-8ea5-1b608ff29c5e",
+			"key": "compendium_local",
+			"value": "localhost:8080",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

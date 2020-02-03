@@ -63,7 +63,7 @@
 ## Model example
 To show this example run:
 
-    sbt "project plugin" run
+    sbt "project avroExample" run
 
 - The log traces will show some data.
 - In `target/scala-2.12/src_managed` will appear scala files with all the case classes.
