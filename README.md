@@ -39,21 +39,20 @@
     Also to your `build.sbt` file add to your project settings
 
     `.settings(
-        compendiumProtocolIdentifiers := List("product","supplier","sale","client"),
-        compendiumServerHost := "localhost",
-        compendiumServerPort := 8080,
-        compendiumFormatSchema:= IdlName.Avro,
-        sourceGenerators in Compile += Def.task {
-          compendiumGenClients.value
-        }.taskValue
+         compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("supplier",None),ProtocolAndVersion("material",None),ProtocolAndVersion("sale",None)),
+         compendiumSrcGenServerHost := "localhost",
+         compendiumSrcGenServerPort := 8080,
+         sourceGenerators in Compile += Def.task {
+           compendiumSrcGenClients.value
+         }.taskValue
     )`
 
     The configuration works as follow:
 
-    - `compendiumServerHost`: String. Url of the compendium server. Default: "localhost"
-    - `compendiumServerPort`: Integer. Port of the compendium server. Default: 47047
-    - `compendiumFormatSchema`: IdlName type. Schema type to download. Default: IdlName.Avro. Valid values: Avro, Proto, OpenApi, Mu, Scala.
-    - `compendiumProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
+    - `compendiumSrcGenServerHost`: case class ProtocolAndVersion(name: String, version: Option[String]). Url of the compendium server. Default: "localhost"
+    - `compendiumSrcGenServerPort`: Integer. Port of the compendium server. Default: 47047
+    - `compendiumSrcGenFormatSchema`: IdlName type. Schema type to download. Default: IdlName.Avro. Valid values: Avro, Proto, OpenApi, Mu, Scala.
+    - `compendiumSrcGenProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
 
 
 ## Model example
