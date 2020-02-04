@@ -8,9 +8,6 @@ import Decoder._
 
 object Main extends IOApp with Reader[Product] {
 
-  val path = s"${System.getProperty("user.dir")}/log/logback.xml"
-  System.setProperty("logback.configurationFile", path)
-
   implicit val logger: SelfAwareStructuredLogger[IO] =
     Slf4jLogger.getLogger
 
