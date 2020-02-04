@@ -1,3 +1,5 @@
+import sbtcompendium.ProtocolAndVersion
+
 lazy val version = new {
   val cats: String = "2.1.0"
   val catseffect: String = "2.0.0"
@@ -39,12 +41,11 @@ lazy val avroExample: Project = project
   .settings(pluginExampleSettings)
   .settings(catsSettings)
   .settings(
-    compendiumProtocolIdentifiers := List("supplier","material","sale"),
-    compendiumServerHost := "localhost",
-    compendiumServerPort := 8080,
-    compendiumFormatSchema:="avro",
+    compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("supplier",None),ProtocolAndVersion("material",None),ProtocolAndVersion("sale",None)),
+    compendiumSrcGenServerHost := "localhost",
+    compendiumSrcGenServerPort := 8080,
     sourceGenerators in Compile += Def.task {
-      compendiumGenClients.value
+      compendiumSrcGenClients.value
     }.taskValue
   )
   .settings(

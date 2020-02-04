@@ -15,7 +15,7 @@
 - Postgres in local.
 
     By default: pointing to `localhost:5432` and database `postgres`.
- Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"
+ Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"`
 
 - Docker
 
@@ -39,21 +39,20 @@
     Also to your `build.sbt` file add to your project settings
 
     `.settings(
-        compendiumProtocolIdentifiers := List("product","supplier","sale","client"),
-        compendiumServerHost := "localhost",
-        compendiumServerPort := 8080,
-        compendiumFormatSchema:="avro",
-        sourceGenerators in Compile += Def.task {
-          compendiumGenClients.value
-        }.taskValue
+         compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("supplier",None),ProtocolAndVersion("material",None),ProtocolAndVersion("sale",None)),
+         compendiumSrcGenServerHost := "localhost",
+         compendiumSrcGenServerPort := 8080,
+         sourceGenerators in Compile += Def.task {
+           compendiumSrcGenClients.value
+         }.taskValue
     )`
 
     The configuration works as follow:
 
-    - `compendiumServerHost`: String. Url of the compendium server. Default: "localhost"
-    - `compendiumServerPort`: Integer. Port of the compendium server. Default: 47047
-    - `compendiumFormatSchema`: String. Schema type to download. Default: "avro". Valid values: "avro", "proto".
-    - `compendiumProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
+    - `compendiumSrcGenServerHost`: case class ProtocolAndVersion(name: String, version: Option[String]). Url of the compendium server. Default: "localhost"
+    - `compendiumSrcGenServerPort`: Integer. Port of the compendium server. Default: 47047
+    - `compendiumSrcGenFormatSchema`: IdlName type. Schema type to download. Default: IdlName.Avro. Valid values: Avro, Proto, OpenApi, Mu, Scala.
+    - `compendiumSrcGenProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
 
 
 ## Model example
