@@ -19,7 +19,7 @@
 
 - Docker
 
-  In the root directory of this project you can find a `docker-compose` yaml file and a `Dockerfile` file. On this directory, run
+  In the root directory of [compendium project](https://github.com/higherkindness/compendium) you can find a `docker-compose` yaml file and a `Dockerfile` file. On that directory, run
 
         docker-compose up
 

@@ -1,5 +1,4 @@
 lazy val version = new {
-  val compendiumVersion = "0.0.1-SNAPSHOT"
   val cats: String = "2.1.0"
   val catseffect: String = "2.0.0"
   val log4cats = "0.3.0"
@@ -52,15 +51,15 @@ lazy val avroExample: Project = project
     organization := "higherkindness",
     name := "compendium-test",
     scalaVersion := "2.12.10",
-      scalacOptions ++= Seq(
-          "-deprecation",
-          "-encoding", "UTF-8",
-          "-language:higherKinds",
-          "-language:postfixOps",
-          "-feature",
-          "-Ypartial-unification",
-          "-Xfatal-warnings",
-      )
+    scalacOptions ++= Seq(
+        "-deprecation",
+        "-encoding", "UTF-8",
+        "-language:higherKinds",
+        "-language:postfixOps",
+        "-feature",
+        "-Ypartial-unification",
+        "-Xfatal-warnings",
+    )
   )
 
 
