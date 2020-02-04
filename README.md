@@ -15,7 +15,7 @@
 - Postgres in local.
 
     By default: pointing to `localhost:5432` and database `postgres`.
- Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"
+ Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"`
 
 - Docker
 
@@ -42,7 +42,7 @@
         compendiumProtocolIdentifiers := List("product","supplier","sale","client"),
         compendiumServerHost := "localhost",
         compendiumServerPort := 8080,
-        compendiumFormatSchema:="avro",
+        compendiumFormatSchema:= IdlName.Avro,
         sourceGenerators in Compile += Def.task {
           compendiumGenClients.value
         }.taskValue
@@ -52,7 +52,7 @@
 
     - `compendiumServerHost`: String. Url of the compendium server. Default: "localhost"
     - `compendiumServerPort`: Integer. Port of the compendium server. Default: 47047
-    - `compendiumFormatSchema`: String. Schema type to download. Default: "avro". Valid values: "avro", "proto".
+    - `compendiumFormatSchema`: IdlName type. Schema type to download. Default: IdlName.Avro. Valid values: Avro, Proto, OpenApi, Mu, Scala.
     - `compendiumProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
 
 

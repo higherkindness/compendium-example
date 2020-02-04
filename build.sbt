@@ -39,12 +39,11 @@ lazy val avroExample: Project = project
   .settings(pluginExampleSettings)
   .settings(catsSettings)
   .settings(
-    compendiumProtocolIdentifiers := List("supplier","material","sale"),
-    compendiumServerHost := "localhost",
-    compendiumServerPort := 8080,
-    compendiumFormatSchema:="avro",
+    compendiumSrcGenProtocolIdentifiers := List("supplier","material","sale"),
+    compendiumSrcGenServerHost := "localhost",
+    compendiumSrcGenServerPort := 8080,
     sourceGenerators in Compile += Def.task {
-      compendiumGenClients.value
+      compendiumSrcGenClients.value
     }.taskValue
   )
   .settings(
