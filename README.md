@@ -25,7 +25,7 @@
 
 - Postman
 
-    Import collection on `src/main/resources/compendium.postman_collection.json`. Please notice this has `localhost:8080` as a default host for compendium server.
+    Import collection on `postman/compendium.postman_collection.json`. Please notice this has `localhost:8080` as a default host for compendium server.
     POST calls has to give a **string** with the whole schema. It wil be parsed internally.
 
     Currently `sbt-compendium` handles avro schema. But `compendium-server` admits `protobuf`, `mu`, `scala`, `avro` and `openapi`.

@@ -1,8 +1,3 @@
-import cats.effect.IO
-import higherkindness.compendium.models.IdlName
-import sbt.Keys.version
-import sbtcompendium.CompendiumUtils
-
 lazy val version = new {
   val compendiumVersion = "0.0.1-SNAPSHOT"
   val cats: String = "2.1.0"
@@ -11,6 +6,8 @@ lazy val version = new {
   val logbackClassic = "1.2.3"
   val hammock: String = "0.10.0"
   val pureConfig: String = "0.12.2"
+  val avroHugger: String = "1.0.0-RC22"
+  val kantan: String = "0.6.0"
 }
 lazy val logSettings: Seq[Def.Setting[_]] = Seq(
   libraryDependencies ++= Seq(
@@ -33,23 +30,11 @@ lazy val catsSettings = Seq(
   )
 )
 
-lazy val compendiumClientSettings = Seq(
-  libraryDependencies ++= Seq(
-    "io.higherkindness" %% "compendium-client" % version.compendiumVersion,
-    "com.pepegar" %% "hammock-core" % version.hammock,
-    "com.pepegar" %% "hammock-asynchttpclient" % version.hammock,
-    "com.pepegar" %% "hammock-apache-http" % version.hammock,
-    "com.julianpeeters"               %% "avrohugger-core" % "1.0.0-RC22"
-  )
-)
-
 lazy val pluginExampleSettings = Seq(
-    libraryDependencies += "com.nrinaudo" %% "kantan.csv" % "0.6.0"
+    libraryDependencies += "com.nrinaudo" %% "kantan.csv" % version.kantan
 )
-
 
 lazy val avroExample: Project = project
-  .enablePlugins(CompendiumPlugin)
   .in(file("avroExample"))
   .settings(logSettings)
   .settings(pluginExampleSettings)
@@ -77,3 +62,5 @@ lazy val avroExample: Project = project
           "-Xfatal-warnings",
       )
   )
+
+

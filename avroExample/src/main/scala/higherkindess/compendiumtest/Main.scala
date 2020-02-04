@@ -8,7 +8,11 @@ import Decoder._
 
 object Main extends IOApp with Reader[Product] {
 
-  implicit val logger: SelfAwareStructuredLogger[IO] = Slf4jLogger.getLogger
+  val path = s"${System.getProperty("user.dir")}/log/logback.xml"
+  System.setProperty("logback.configurationFile", path)
+
+  implicit val logger: SelfAwareStructuredLogger[IO] =
+    Slf4jLogger.getLogger
 
   override def run(args: List[String]): IO[ExitCode] = {
 
