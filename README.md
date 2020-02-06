@@ -55,7 +55,7 @@
     - `compendiumSrcGenProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
 
 
-## Model example
+## [Avro] Model example
 To show this example run:
 
     sbt "project avroExample" run
@@ -305,3 +305,16 @@ Remember, compendium always provides the last version saved.
       ]
     }
 
+## [Proto] Model example
+
+The following dependency is *mandatory* for protobuf type:
+
+     "com.47deg"    %% "pbdirect" % "0.4.1"
+
+To show this example run:
+
+    sbt "project avroExample" run
+
+- The log traces will show some data.
+- In `target/scala-2.12/src_managed` will appear scala files with all the case classes.
+- In this case, each class will be created inside a `compendium` package object. To access to a certain class you'll need to import `import [actually.your.package].compendium`
