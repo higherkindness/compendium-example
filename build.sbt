@@ -76,7 +76,7 @@ lazy val protoExample: Project = project
             "co.fs2" %% "fs2-core" % version.fs2
         ))
         .settings(
-            compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("example",None)),
+            compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("shop",None)),
             compendiumSrcGenServerHost := "localhost",
             compendiumSrcGenServerPort := 8080,
             compendiumSrcGenFormatSchema := IdlName.Protobuf,

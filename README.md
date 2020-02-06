@@ -95,7 +95,7 @@ Please, notice that in POST calls the identifiers need to be added to the `compe
 ### Avro files in JSON format
 
 This section provides, in json format, the schemas presented previously. Also it contains new models and versions to test the behaviour of `compendium`.
-Remember, compendium always provides the last version saved.
+Remember, compendium always provides the last version saved unless otherwise stated.
 
 ##### Supplier schema:
 
@@ -318,3 +318,58 @@ To show this example run:
 - The log traces will show some data.
 - In `target/scala-2.12/src_managed` will appear scala files with all the case classes.
 - In this case, each class will be created inside a `compendium` package object. To access to a certain class you'll need to import `import [actually.your.package].compendium`
+
+### Structure
+
+Let's suppose some data with the following structure:
+
+| name | fields |
+| ---- | ------ |
+| supplier | id_supplier, name, email, phone |
+| sale | client*, product** |
+| client* | id_client, name, surname, email |
+| product** | id_prod, description, color, size |
+| material | name, code, shipId |
+
+
+In postgres, schemas will be saved as a full string with the POST call:
+
+    "syntax = \"proto3\";\n\npackage higherkindness.compendiumtest;\n\nmessage Supplier {\n  string id_supplier = 1;\n  string name = 2;\n  string email = 3;\n  string phone = 4;\n}\n\nmessage Client {\n  string id_client = 1;\n  string name = 2;\n  string surname = 3;\n  string email = 4;\n}\n\nmessage Product {\n  string id_prod = 1;\n  string description = 2;\n  string color = 3;\n  string size = 4;\n}\n\nmessage Sale {\n  string Client = 1;\n  string Product = 2;\n}\n\n\nservice SearchOps {\n  rpc FindProducts (Client) returns (Product);\n  rpc FindClients (Product) returns (Client);\n}"
+
+### Full schema
+
+    syntax = "proto3";
+    
+    package higherkindness.compendiumtest;
+    
+    message Supplier {
+      string id_supplier = 1;
+      string name = 2;
+      string email = 3;
+      string phone = 4;
+    }
+    
+    message Client {
+      string id_client = 1;
+      string name = 2;
+      string surname = 3;
+      string email = 4;
+    }
+    
+    message Product {
+      string id_prod = 1;
+      string description = 2;
+      string color = 3;
+      string size = 4;
+    }
+    
+    message Sale {
+      string Client = 1;
+      string Product = 2;
+    }
+    
+    
+    service SearchOps {
+      rpc FindProducts (Client) returns (Product);
+      rpc FindClients (Product) returns (Client);
+    }
