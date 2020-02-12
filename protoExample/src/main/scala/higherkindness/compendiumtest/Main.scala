@@ -1,12 +1,13 @@
-package higherkindess.compendiumtest
+package higherkindness.compendiumtest
 
 import cats.effect.{ExitCode, IO, IOApp}
-import higherkindness.compendiumtest._
+
+import higherkindness.compendiumtest.compendium._
 import io.chrisdavenport.log4cats.SelfAwareStructuredLogger
 import io.chrisdavenport.log4cats.slf4j.Slf4jLogger
 import Decoder._
 
-object Main extends IOApp with Reader[Product] {
+object Main extends IOApp with Reader {
 
   implicit val logger: SelfAwareStructuredLogger[IO] =
     Slf4jLogger.getLogger
@@ -21,10 +22,9 @@ object Main extends IOApp with Reader[Product] {
       _ <- logger.info("Product first value:" + prods.headOption)
       suppls <- read[Supplier, IO]("/supplier.csv")
       _ <- logger.info("Supplier first value:" + suppls.headOption)
-      mats <- read[Material, IO]("/material.csv")
-      _ <- logger.info("Material first value:" + mats.headOption)
       sales <- read[Sale, IO]("/sale.csv")
       _ <- logger.info("Sale first value:" + sales.headOption)
+
       _ <- logger.info("Bye!")
     } yield ExitCode.Success
   }
