@@ -14,7 +14,7 @@ trait Reader {
         .getResource(fileName)
         .asCsvReader[T](rfc.withHeader)
         .map(_.fold({ e =>
-          logger.error("¡Error decoding! " + e)
+          logger.error("Error decoding! " + e)
           None
         }, Some(_)))
         .toList
