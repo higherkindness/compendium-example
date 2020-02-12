@@ -4,33 +4,33 @@
 
 **Required:**
 
-1. postgres or docker
+1. **postgres or docker**: compendium requires a postgres database to save schemas. If you didn't install on your machine a postgres database, you can use our docker file in the [compendium project](https://github.com/higherkindness/compendium).
 
-2. postman or similar
+2. **postman or similar**: in order to add new schemas in our compendium server (ie. postgres database), we'll have to make some http requests.
 
-3. a working `compendium server`
+3. **a working `compendium server`**: check our [compendium project](https://github.com/higherkindness/compendium)!
 
 **Set up configuration:**
 
-- Postgres in local.
+- **Postgres in local.**
 
     By default: pointing to `localhost:5432` and database `postgres`.
  Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"`
 
-- Docker
+- **Docker**
 
   In the root directory of [compendium project](https://github.com/higherkindness/compendium) you can find a `docker-compose` yaml file and a `Dockerfile` file. On that directory, run
 
         docker-compose up
 
-- Postman
+- **Postman**
 
     Import collection on `postman/compendium.postman_collection.json`. Please notice this has `localhost:8080` as a default host for compendium server.
     POST calls has to give a **string** with the whole schema. It wil be parsed internally.
 
     Currently `sbt-compendium` handles avro schema. But `compendium-server` admits `protobuf`, `mu`, `scala`, `avro` and `openapi`.
 
-- sbt plugin
+- **sbt plugin**
 
     Add to your `project/plugin.sbt` file the following line
 

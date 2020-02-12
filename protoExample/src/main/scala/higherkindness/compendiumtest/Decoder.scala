@@ -6,7 +6,7 @@ import kantan.csv.RowDecoder
 object Decoder {
 
   implicit val productDecoder: RowDecoder[Product] = RowDecoder.ordered {
-    (id: String, desc: String, color: String, size: String) =>
+    (desc: String, id: String, color: String, size: String) =>
       Product(id, desc, color, size)
   }
 
@@ -25,5 +25,10 @@ object Decoder {
      c: String,
      si: String) =>
       Sale(Some(Client(ic, n, sn, em)), Some(Product(ipr, d, c, si)))
+  }
+
+  implicit val clientDecoder: RowDecoder[Client] = RowDecoder.ordered {
+    (ic: String, n: String, sn: String, em: String) =>
+      Client(ic, n, sn, em)
   }
 }
