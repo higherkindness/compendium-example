@@ -1,6 +1,6 @@
 # COMPENDIUM EXAMPLE
 
-## Testing on local device
+## Before starting: requirements and configuration
 
 **Required:**
 
@@ -56,6 +56,9 @@
 
 
 ## [Avro] Model example
+
+#####  **Warning:** Before compiling the project, make sure you have all the schemas in postgres.
+
 To show this example run:
 
     sbt "project avroExample" run
@@ -306,6 +309,8 @@ Remember, compendium always provides the last version saved unless otherwise sta
     }
 
 ## [Proto] Model example
+
+#####  **Warning:** Before compiling the project, make sure you have all the schemas in postgres.
 
 The following dependency is *mandatory* for protobuf type:
 
