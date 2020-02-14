@@ -1,36 +1,36 @@
 # COMPENDIUM EXAMPLE
 
-## Testing on local device
+## Before starting: requirements and configuration
 
 **Required:**
 
-1. postgres or docker
+1. **postgres or docker**: compendium requires a postgres database to save schemas. If you didn't install on your machine a postgres database, you can use our docker file in the [compendium project](https://github.com/higherkindness/compendium).
 
-2. postman or similar
+2. **postman or similar**: in order to add new schemas in our compendium server (ie. postgres database), we'll have to make some http requests.
 
-3. a working `compendium server`
+3. **a working `compendium server`**: check our [compendium project](https://github.com/higherkindness/compendium)!
 
 **Set up configuration:**
 
-- Postgres in local.
+- **Postgres in local.**
 
     By default: pointing to `localhost:5432` and database `postgres`.
  Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"`
 
-- Docker
+- **Docker**
 
   In the root directory of [compendium project](https://github.com/higherkindness/compendium) you can find a `docker-compose` yaml file and a `Dockerfile` file. On that directory, run
 
         docker-compose up
 
-- Postman
+- **Postman**
 
     Import collection on `postman/compendium.postman_collection.json`. Please notice this has `localhost:8080` as a default host for compendium server.
     POST calls has to give a **string** with the whole schema. It wil be parsed internally.
 
     Currently `sbt-compendium` handles avro schema. But `compendium-server` admits `protobuf`, `mu`, `scala`, `avro` and `openapi`.
 
-- sbt plugin
+- **sbt plugin**
 
     Add to your `project/plugin.sbt` file the following line
 
@@ -55,7 +55,10 @@
     - `compendiumSrcGenProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
 
 
-## Model example
+## [Avro] Model example
+
+#####  **Warning:** Before compiling the project, make sure you have all the schemas in postgres.
+
 To show this example run:
 
     sbt "project avroExample" run
@@ -95,7 +98,7 @@ Please, notice that in POST calls the identifiers need to be added to the `compe
 ### Avro files in JSON format
 
 This section provides, in json format, the schemas presented previously. Also it contains new models and versions to test the behaviour of `compendium`.
-Remember, compendium always provides the last version saved.
+Remember, compendium always provides the last version saved unless otherwise stated.
 
 ##### Supplier schema:
 
@@ -305,3 +308,73 @@ Remember, compendium always provides the last version saved.
       ]
     }
 
+## [Proto] Model example
+
+#####  **Warning:** Before compiling the project, make sure you have all the schemas in postgres.
+
+The following dependency is *mandatory* for protobuf type:
+
+     "com.47deg"    %% "pbdirect" % "0.4.1"
+
+To show this example run:
+
+    sbt "project protoExample" run
+
+- The log traces will show some data.
+- In `target/scala-2.12/src_managed` will appear scala files with all the case classes.
+- In this case, each class will be created inside a `compendium` package object. To access to a certain class you'll need to import `import [actually.your.package].compendium`
+
+### Structure
+
+Let's suppose some data with the following structure:
+
+| name | fields |
+| ---- | ------ |
+| supplier | id_supplier, name, email, phone |
+| sale | client*, product** |
+| client* | id_client, name, surname, email |
+| product** | id_prod, description, color, size |
+| material | name, code, shipId |
+
+
+In postgres, schemas will be saved as a full string with the POST call:
+
+    "syntax = \"proto3\";\n\npackage higherkindness.compendiumtest;\n\nmessage Supplier {\n  string id_supplier = 1;\n  string name = 2;\n  string email = 3;\n  string phone = 4;\n}\n\nmessage Client {\n  string id_client = 1;\n  string name = 2;\n  string surname = 3;\n  string email = 4;\n}\n\nmessage Product {\n  string id_prod = 1;\n  string description = 2;\n  string color = 3;\n  string size = 4;\n}\n\nmessage Sale {\n Client client = 1;\n Product product = 2;\n}\n\n\nservice SearchOps {\n  rpc FindProducts (Client) returns (Product);\n  rpc FindClients (Product) returns (Client);\n}"
+
+### Full schema
+
+    syntax = "proto3";
+    
+    package higherkindness.compendiumtest;
+    
+    message Supplier {
+      string id_supplier = 1;
+      string name = 2;
+      string email = 3;
+      string phone = 4;
+    }
+    
+    message Client {
+      string id_client = 1;
+      string name = 2;
+      string surname = 3;
+      string email = 4;
+    }
+    
+    message Product {
+      string id_prod = 1;
+      string description = 2;
+      string color = 3;
+      string size = 4;
+    }
+    
+    message Sale {
+      Client client = 1;
+      Product product = 2;
+    }
+    
+    
+    service SearchOps {
+      rpc FindProducts (Client) returns (Product);
+      rpc FindClients (Product) returns (Client);
+    }

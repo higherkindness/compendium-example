@@ -1,3 +1,4 @@
+import higherkindness.compendium.models.IdlName
 import sbtcompendium.ProtocolAndVersion
 
 lazy val version = new {
@@ -9,6 +10,8 @@ lazy val version = new {
   val pureConfig: String = "0.12.2"
   val avroHugger: String = "1.0.0-RC22"
   val kantan: String = "0.6.0"
+    val pbdirect: String            = "0.4.1"
+    val fs2 = "1.0.0"
 }
 lazy val logSettings: Seq[Def.Setting[_]] = Seq(
   libraryDependencies ++= Seq(
@@ -62,5 +65,38 @@ lazy val avroExample: Project = project
         "-Xfatal-warnings",
     )
   )
+
+lazy val protoExample: Project = project
+        .in(file("protoExample"))
+        .settings(logSettings)
+        .settings(pluginExampleSettings)
+        .settings(catsSettings)
+        .settings(libraryDependencies ++=Seq(
+            "com.47deg"    %% "pbdirect"   % version.pbdirect,
+            "co.fs2" %% "fs2-core" % version.fs2
+        ))
+        .settings(
+            compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("shop",None)),
+            compendiumSrcGenServerHost := "localhost",
+            compendiumSrcGenServerPort := 8080,
+            compendiumSrcGenFormatSchema := IdlName.Protobuf,
+            sourceGenerators in Compile += Def.task {
+                compendiumSrcGenClients.value
+            }.taskValue
+        )
+        .settings(
+            organization := "higherkindness",
+            name := "compendium-test",
+            scalaVersion := "2.12.10",
+            scalacOptions ++= Seq(
+                "-deprecation",
+                "-encoding", "UTF-8",
+                "-language:higherKinds",
+                "-language:postfixOps",
+                "-feature",
+                "-Ypartial-unification",
+                "-Xfatal-warnings",
+            )
+        )
 
 

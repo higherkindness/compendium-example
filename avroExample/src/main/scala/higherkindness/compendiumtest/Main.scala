@@ -1,4 +1,4 @@
-package higherkindess.compendiumtest
+package higherkindness.compendiumtest
 
 import cats.effect.{ExitCode, IO, IOApp}
 import higherkindness.compendiumtest._
@@ -6,7 +6,7 @@ import io.chrisdavenport.log4cats.SelfAwareStructuredLogger
 import io.chrisdavenport.log4cats.slf4j.Slf4jLogger
 import Decoder._
 
-object Main extends IOApp with Reader[Product] {
+object Main extends IOApp with Reader {
 
   implicit val logger: SelfAwareStructuredLogger[IO] =
     Slf4jLogger.getLogger

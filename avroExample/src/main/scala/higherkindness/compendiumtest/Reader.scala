@@ -1,4 +1,4 @@
-package higherkindess.compendiumtest
+package higherkindness.compendiumtest
 
 import cats.effect.Sync
 import io.chrisdavenport.log4cats.Logger
@@ -6,7 +6,7 @@ import kantan.csv.rfc
 import kantan.csv.ops._
 import kantan.csv.RowDecoder
 
-trait Reader[T] {
+trait Reader {
 
   def read[T, F[_]: Sync](fileName: String)(implicit logger: Logger[F],
                                             decode: RowDecoder[T]): F[List[T]] =

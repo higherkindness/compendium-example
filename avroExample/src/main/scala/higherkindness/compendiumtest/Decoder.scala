@@ -1,6 +1,5 @@
-package higherkindess.compendiumtest
+package higherkindness.compendiumtest
 
-import higherkindness.compendiumtest._
 import kantan.csv.RowDecoder
 
 object Decoder {
