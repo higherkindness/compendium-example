@@ -1,4 +1,4 @@
-import higherkindness.compendium.models.IdlName
+import sbtcompendium.models.IdlName
 import sbtcompendium.ProtocolAndVersion
 
 lazy val version = new {
