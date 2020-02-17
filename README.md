@@ -378,3 +378,189 @@ In postgres, schemas will be saved as a full string with the POST call:
       rpc FindProducts (Client) returns (Product);
       rpc FindClients (Product) returns (Client);
     }
+
+
+## [OpenApi] Model Example
+
+#####  **Warning:** Before compiling the project, make sure you have all the schemas in postgres.
+
+To show this example run:
+
+    sbt "project openapiExample" run
+
+- Notice with openapi only one schema can be created at once.
+- In `target/scala-2.12/src_managed` will appear scala files with all the case classes.
+
+
+### Full Schema
+
+"{\"openapi\":\"3.0.0\",\"info\":{\"version\":\"1.0.0\",\"title\":\"Shop Example\",\"license\":{\"name\":\"47deg\"}},\"servers\":[{\"url\":\"http:\/\/localhost:8080\/v1\"}],\"paths\":{\"\/products\":{\"get\":{\"summary\":\"List all products\",\"operationId\":\"listProducts\",\"tags\":[\"products\"],\"parameters\":[],\"responses\":{\"200\":{\"description\":\"A paged array of products\",\"headers\":{\"x-next\":{\"description\":\"A link to the next page of responses\",\"schema\":{\"type\":\"string\"}}},\"content\":{\"application\/json\":{\"schema\":{\"$ref\":\"#\/components\/schemas\/Products\"}}}},\"default\":{\"description\":\"unexpected error\",\"content\":{\"application\/json\":{\"schema\":{\"$ref\":\"#\/components\/schemas\/ErrorHttp\"}}}}}},\"post\":{\"summary\":\"Create a product\",\"operationId\":\"createProduct\",\"tags\":[\"product\"],\"responses\":{\"201\":{\"description\":\"Null response\"},\"default\":{\"description\":\"unexpected error\",\"content\":{\"application\/json\":{\"schema\":{\"$ref\":\"#\/components\/schemas\/ErrorHttp\"}}}}}}},\"\/product\/{productId}\":{\"get\":{\"summary\":\"Info for a specific product\",\"operationId\":\"showProductById\",\"tags\":[\"product\"],\"parameters\":[{\"name\":\"productId\",\"in\":\"path\",\"required\":true,\"description\":\"The id of the product to retrieve\",\"schema\":{\"type\":\"string\"}}],\"responses\":{\"200\":{\"description\":\"Expected response to a valid request\",\"content\":{\"application\/json\":{\"schema\":{\"$ref\":\"#\/components\/schemas\/Product\"}}}},\"default\":{\"description\":\"unexpected error\",\"content\":{\"application\/json\":{\"schema\":{\"$ref\":\"#\/components\/schemas\/ErrorHttp\"}}}}}}}},\"components\":{\"schemas\":{\"Product\":{\"required\":[\"id_prod\",\"description\",\"color\",\"size\"],\"properties\":{\"id_prod\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"color\":{\"type\":\"string\"},\"size\":{\"type\":\"string\"}}},\"Products\":{\"type\":\"array\",\"items\":{\"$ref\":\"#\/components\/schemas\/Product\"}},\"ErrorHttp\":{\"required\":[\"code\",\"message\"],\"properties\":{\"code\":{\"type\":\"integer\",\"format\":\"int32\"},\"message\":{\"type\":\"string\"}}}}}}"
+
+    {
+      "openapi": "3.0.0",
+      "info": {
+        "version": "1.0.0",
+        "title": "Shop Example",
+        "license": {
+          "name": "47deg"
+        }
+      },
+      "servers": [
+        {
+          "url": "http://localhost:8080/v1"
+        }
+      ],
+      "paths": {
+        "/products": {
+          "get": {
+            "summary": "List all products",
+            "operationId": "listProducts",
+            "tags": [
+              "products"
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "A paged array of products",
+                "headers": {
+                  "x-next": {
+                    "description": "A link to the next page of responses",
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Products"
+                    }
+                  }
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorHttp"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "post": {
+            "summary": "Create a product",
+            "operationId": "createProduct",
+            "tags": [
+              "product"
+            ],
+            "responses": {
+              "201": {
+                "description": "Null response"
+              },
+              "default": {
+                "description": "unexpected error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorHttp"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/product/{productId}": {
+          "get": {
+            "summary": "Info for a specific product",
+            "operationId": "showProductById",
+            "tags": [
+              "product"
+            ],
+            "parameters": [
+              {
+                "name": "productId",
+                "in": "path",
+                "required": true,
+                "description": "The id of the product to retrieve",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Expected response to a valid request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Product"
+                    }
+                  }
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorHttp"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "Product": {
+            "required": [
+              "id_prod",
+              "description",
+              "color",
+              "size"
+            ],
+            "properties": {
+              "id_prod": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              }
+            }
+          },
+          "Products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "ErrorHttp": {
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }

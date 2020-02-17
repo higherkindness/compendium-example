@@ -2,16 +2,18 @@ import sbtcompendium.models.IdlName
 import sbtcompendium.ProtocolAndVersion
 
 lazy val version = new {
+  val avroHugger: String = "1.0.0-RC22"
   val cats: String = "2.1.0"
   val catseffect: String = "2.0.0"
+  val circe: String               = "0.13.0"
+  val fs2 = "1.0.0"
+  val hammock: String = "0.10.0"
+  val http4s = "0.20.0"
+  val kantan: String = "0.6.0"
   val log4cats = "0.3.0"
   val logbackClassic = "1.2.3"
-  val hammock: String = "0.10.0"
+  val pbdirect: String            = "0.4.1"
   val pureConfig: String = "0.12.2"
-  val avroHugger: String = "1.0.0-RC22"
-  val kantan: String = "0.6.0"
-    val pbdirect: String            = "0.4.1"
-    val fs2 = "1.0.0"
 }
 lazy val logSettings: Seq[Def.Setting[_]] = Seq(
   libraryDependencies ++= Seq(
@@ -99,4 +101,43 @@ lazy val protoExample: Project = project
             )
         )
 
+
+
+lazy val openapiExample: Project = project
+        .in(file("openapiExample"))
+        .settings(logSettings)
+        .settings(pluginExampleSettings)
+        .settings(catsSettings)
+        .settings(
+            libraryDependencies ++= Seq(
+                "org.http4s" %%"http4s-dsl"% version.http4s,
+                "org.http4s" %%"http4s-blaze-server"% version.http4s,
+                "org.http4s" %%"http4s-circe"% version.http4s,
+                "org.http4s" %%"http4s-blaze-client"% version.http4s,
+                "io.circe" %%"circe-generic" % version.circe
+            )
+        )
+        .settings(
+            compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("shopoapi",None)),
+            compendiumSrcGenServerHost := "localhost",
+            compendiumSrcGenServerPort := 8080,
+            compendiumSrcGenFormatSchema := IdlName.OpenApi,
+            sourceGenerators in Compile += Def.task {
+                compendiumSrcGenClients.value
+            }.taskValue
+        )
+        .settings(
+            organization := "higherkindness",
+            name := "compendium-test",
+            scalaVersion := "2.12.10",
+            scalacOptions ++= Seq(
+                "-deprecation",
+                "-encoding", "UTF-8",
+                "-language:higherKinds",
+                "-language:postfixOps",
+                "-feature",
+                "-Ypartial-unification",
+                "-Xfatal-warnings",
+            )
+        )
 
