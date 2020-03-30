@@ -1,5 +1,6 @@
 import sbtcompendium.models.IdlName
 import sbtcompendium.ProtocolAndVersion
+import sbtcompendium.models.proto.{GzipGen, MonixObservable, NoCompressionGen}
 
 lazy val version = new {
   val cats: String = "2.1.0"
@@ -80,6 +81,8 @@ lazy val protoExample: Project = project
             compendiumSrcGenServerHost := "localhost",
             compendiumSrcGenServerPort := 8080,
             compendiumSrcGenFormatSchema := IdlName.Protobuf,
+            compendiumSrcGenProtobufCompressionType := GzipGen,
+            compendiumSrcGenProtobufStreamingImpl:= MonixObservable,
             sourceGenerators in Compile += Def.task {
                 compendiumSrcGenClients.value
             }.taskValue
