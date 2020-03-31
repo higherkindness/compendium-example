@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"raw\" : \"{\\\"namespace\\\":\\\"correct.avro\\\",\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"User\\\",\\\"fields\\\":[{\\\"name\\\":\\\"name\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"age\\\",\\\"type\\\":\\\"int\\\"},{\\\"name\\\":\\\"address\\\",\\\"type\\\":[\\\"string\\\",\\\"null\\\"]}]}\"\n\n}",
+					"raw": "{\n  \"raw\" : \"syntax = \\\"proto3\\\";\\n\\npackage higherkindness.compendiumtest;\\n\\nmessage Supplier {\\n  string id_supplier = 1;\\n  string name = 2;\\n  string email = 3;\\n  string phone = 4;\\n}\\n\\nmessage Client {\\n  string id_client = 1;\\n  string name = 2;\\n  string surname = 3;\\n  string email = 4;\\n}\\n\\nmessage Product {\\n  string id_prod = 1;\\n  string description = 2;\\n  string color = 3;\\n  string size = 4;\\n}\\n\\nmessage Sale {\\n Client client = 1;\\n Product product = 2;\\n}\\n\\n\\nservice SearchOps {\\n  rpc FindProducts (Client) returns (Product);\\n  rpc FindClients (Product) returns (Client);\\n}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -27,19 +27,19 @@
 					}
 				},
 				"url": {
-					"raw": "{{compendium_local}}/v0/protocol/a?idlName=avro",
+					"raw": "{{compendium_local}}/v0/protocol/shop?idlName=protobuf",
 					"host": [
 						"{{compendium_local}}"
 					],
 					"path": [
 						"v0",
 						"protocol",
-						"a"
+						"shop"
 					],
 					"query": [
 						{
 							"key": "idlName",
-							"value": "avro"
+							"value": "protobuf"
 						}
 					]
 				}
@@ -71,14 +71,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{compendium_local}}/v0/protocol/a?version=1",
+					"raw": "{{compendium_local}}/v0/protocol/shop?version=1",
 					"host": [
 						"{{compendium_local}}"
 					],
 					"path": [
 						"v0",
 						"protocol",
-						"a"
+						"shop"
 					],
 					"query": [
 						{
@@ -177,7 +177,7 @@
 	],
 	"variable": [
 		{
-			"id": "0062750c-cec4-4a19-8ea5-1b608ff29c5e",
+			"id": "c836f8aa-ae9d-4e42-84cb-f3aaa42e210e",
 			"key": "compendium_local",
 			"value": "localhost:8080",
 			"type": "string"

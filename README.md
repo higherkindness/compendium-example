@@ -1,59 +1,30 @@
 # COMPENDIUM EXAMPLE
 
+This project contains some `sbt-compendium` examples.
+
 ## Before starting: requirements and configuration
 
 **Required:**
 
-1. **postgres or docker**: compendium requires a postgres database to save schemas. If you didn't install on your machine a postgres database, you can use our docker file in the [compendium project](https://github.com/higherkindness/compendium).
+First you'll need a working `compendium server`, check the [compendium documentation](https://higherkindness.io/compendium/docs/deployment/). Please notice compendium requires a postgres database to save schemas so it offers a docker image to run a PostgreSQL database and a Compendium instance connected to that database. You can also install PostgreSQL on your local, create the required databases, `compendium_metadata` and `compendium_protocols`, and point compendium out to that PostgreSQL instance.
 
-2. **postman or similar**: in order to add new schemas in our compendium server (ie. postgres database), we'll have to make some http requests.
-
-3. **a working `compendium server`**: check our [compendium project](https://github.com/higherkindness/compendium)!
+Second, in order to add new schemas in our compendium server, we'll have to make some http requests. Some call samples are provided below.
 
 **Set up configuration:**
 
 - **Postgres in local.**
 
-    By default: pointing to `localhost:5432` and database `postgres`.
+ By default: pointing to `localhost:5432` and database `postgres`.
  Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"`
 
 - **Docker**
 
-  In the root directory of [compendium project](https://github.com/higherkindness/compendium) you can find a `docker-compose` yaml file and a `Dockerfile` file. On that directory, run
-
-        docker-compose up
+   More details on [compendium microsite](https://higherkindness.io/compendium/docs/deployment/docker/).
 
 - **Postman**
 
     Import collection on `postman/compendium.postman_collection.json`. Please notice this has `localhost:8080` as a default host for compendium server.
     POST calls has to give a **string** with the whole schema. It wil be parsed internally.
-
-    Currently `sbt-compendium` handles avro schema. But `compendium-server` admits `protobuf`, `mu`, `scala`, `avro` and `openapi`.
-
-- **sbt plugin**
-
-    Add to your `project/plugin.sbt` file the following line
-
-    `addSbtPlugin("io.higherkindness" %% "sbt-compendium" % "0.0.1-SNAPSHOT")`
-
-    Also to your `build.sbt` file add to your project settings
-
-    `.settings(
-         compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("supplier",None),ProtocolAndVersion("material",None),ProtocolAndVersion("sale",None)),
-         compendiumSrcGenServerHost := "localhost",
-         compendiumSrcGenServerPort := 8080,
-         sourceGenerators in Compile += Def.task {
-           compendiumSrcGenClients.value
-         }.taskValue
-    )`
-
-    The configuration works as follow:
-
-    - `compendiumSrcGenServerHost`: case class ProtocolAndVersion(name: String, version: Option[String]). Url of the compendium server. Default: "localhost"
-    - `compendiumSrcGenServerPort`: Integer. Port of the compendium server. Default: 47047
-    - `compendiumSrcGenFormatSchema`: IdlName type. Schema type to download. Default: IdlName.Avro. Valid values: Avro, Proto, OpenApi, Mu, Scala.
-    - `compendiumSrcGenProtocolIdentifiers: `List[String]`. Protocol identifiers to be retrieved from compendium server. Default: Nil
-
 
 ## [Avro] Model example
 
@@ -102,7 +73,7 @@ Remember, compendium always provides the last version saved unless otherwise sta
 
 ##### Supplier schema:
 
-    {
+     {
       "type": "record",
       "name": "Supplier",
       "namespace": "higherkindness.compendiumtest",
@@ -221,6 +192,8 @@ Remember, compendium always provides the last version saved unless otherwise sta
 
 
 #### Future iterations
+
+You can add a new version of each schema adding new fields.
 
 ##### Product schema (second version):
 
