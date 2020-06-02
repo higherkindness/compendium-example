@@ -4,27 +4,27 @@ This project contains some `sbt-compendium` examples.
 
 ## Before starting: requirements and configuration
 
-**Required:**
 
-First you'll need a working `compendium server`, check the [compendium documentation](https://higherkindness.io/compendium/docs/deployment/). Please notice compendium requires a postgres database to save schemas so it offers a docker image to run a PostgreSQL database and a Compendium instance connected to that database. You can also install PostgreSQL on your local, create the required databases, `compendium_metadata` and `compendium_protocols`, and point compendium out to that PostgreSQL instance.
+- First you'll need a working `compendium server`, please check the 
+[compendium documentation](https://higherkindness.io/compendium/docs/deployment/). 
 
-Second, in order to add new schemas in our compendium server, we'll have to make some http requests. Some call samples are provided below.
+    Compendium requires some PostgreSQL databases to save schemas, so two options are offered for set up all that.
+    
+    1. Use the [Docker image](https://higherkindness.io/compendium/docs/deployment/docker/) provided by Compenidum to 
+    run a PostgreSQL database and a Compendium instance connected to that database.
+     
+    2. Download [Compendium project](https://github.com/higherkindness/compendium/) to have it locally. Install 
+    PostgreSQL on your local, create the required databases (`compendium_metadata` and `compendium_protocols`) 
+    and point Compendium out to that PostgreSQL instance. All variables are defined at Compendium’s application.conf`.`
+    Once done that, you will be able to run the project and make your server work.
+    
 
-**Set up configuration:**
+- Second, in order to add new schemas in our Compendium server, we'll have to make some http requests. We are going
+to use [Postman](https://www.postman.com/) for this. Once installed, import collection provided on
+`postman/compendium.postman_collection.json`.
 
-- **Postgres in local.**
 
- By default: pointing to `localhost:5432` and database `postgres`.
- Configurable on environment var: `COMPENDIUM_METADATA_STORAGE_JDBC_URL` by default: `"jdbc:postgresql://localhost:5432/postgres"`
-
-- **Docker**
-
-   More details on [compendium microsite](https://higherkindness.io/compendium/docs/deployment/docker/).
-
-- **Postman**
-
-    Import collection on `postman/compendium.postman_collection.json`. Please notice this has `localhost:8080` as a default host for compendium server.
-    POST calls has to give a **string** with the whole schema. It wil be parsed internally.
+## WIP WIP WIP
 
 ## [Avro] Model example
 

@@ -1,6 +1,7 @@
-import sbtcompendium.models.IdlName
-import sbtcompendium.ProtocolAndVersion
-import sbtcompendium.models.proto.{GzipGen, MonixObservable, NoCompressionGen}
+import higherkindness.mu.rpc.srcgen.Model.ExecutionMode.Compendium
+import higherkindness.mu.rpc.srcgen.Model.IdlType.Avro
+import higherkindness.mu.rpc.srcgen.Model.SerializationType
+import higherkindness.mu.rpc.srcgen.compendium.ProtocolAndVersion
 
 lazy val version = new {
   val cats: String = "2.1.0"
@@ -11,8 +12,8 @@ lazy val version = new {
   val pureConfig: String = "0.12.2"
   val avroHugger: String = "1.0.0-RC22"
   val kantan: String = "0.6.0"
-    val pbdirect: String            = "0.4.1"
-    val fs2 = "1.0.0"
+  val pbdirect: String = "0.4.1"
+  val fs2 = "1.0.0"
 }
 lazy val logSettings: Seq[Def.Setting[_]] = Seq(
   libraryDependencies ++= Seq(
@@ -36,7 +37,7 @@ lazy val catsSettings = Seq(
 )
 
 lazy val pluginExampleSettings = Seq(
-    libraryDependencies += "com.nrinaudo" %% "kantan.csv" % version.kantan
+  libraryDependencies += "com.nrinaudo" %% "kantan.csv" % version.kantan
 )
 
 lazy val avroExample: Project = project
@@ -44,62 +45,52 @@ lazy val avroExample: Project = project
   .settings(logSettings)
   .settings(pluginExampleSettings)
   .settings(catsSettings)
-  .settings(
-    compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("supplier",None),ProtocolAndVersion("material",None),ProtocolAndVersion("sale",None)),
-    compendiumSrcGenServerHost := "localhost",
-    compendiumSrcGenServerPort := 8080,
-    sourceGenerators in Compile += Def.task {
-      compendiumSrcGenClients.value
-    }.taskValue
-  )
+  .settings(Seq(
+    muSrcGenIdlType:= Avro,
+    muSrcGenSerializationType := SerializationType.Avro,
+    muSrcGenExecutionMode := Compendium,
+    muSrcGenCompendiumProtocolIdentifiers := List(ProtocolAndVersion("shop",Some("1"))),
+    muSrcGenCompendiumServerUrl := "http://localhost:8080"
+
+  ))
   .settings(
     organization := "higherkindness",
     name := "compendium-test",
     scalaVersion := "2.12.10",
     scalacOptions ++= Seq(
-        "-deprecation",
-        "-encoding", "UTF-8",
-        "-language:higherKinds",
-        "-language:postfixOps",
-        "-feature",
-        "-Ypartial-unification",
-        "-Xfatal-warnings",
+      "-deprecation",
+      "-encoding",
+      "UTF-8",
+      "-language:higherKinds",
+      "-language:postfixOps",
+      "-feature",
+      "-Ypartial-unification",
+      "-Xfatal-warnings",
     )
   )
 
 lazy val protoExample: Project = project
-        .in(file("protoExample"))
-        .settings(logSettings)
-        .settings(pluginExampleSettings)
-        .settings(catsSettings)
-        .settings(libraryDependencies ++=Seq(
-            "com.47deg"    %% "pbdirect"   % version.pbdirect,
-            "co.fs2" %% "fs2-core" % version.fs2
-        ))
-        .settings(
-            compendiumSrcGenProtocolIdentifiers := List(ProtocolAndVersion("shop",None)),
-            compendiumSrcGenServerHost := "localhost",
-            compendiumSrcGenServerPort := 8080,
-            compendiumSrcGenFormatSchema := IdlName.Protobuf,
-            compendiumSrcGenProtobufCompressionType := GzipGen,
-            compendiumSrcGenProtobufStreamingImpl:= MonixObservable,
-            sourceGenerators in Compile += Def.task {
-                compendiumSrcGenClients.value
-            }.taskValue
-        )
-        .settings(
-            organization := "higherkindness",
-            name := "compendium-test",
-            scalaVersion := "2.12.10",
-            scalacOptions ++= Seq(
-                "-deprecation",
-                "-encoding", "UTF-8",
-                "-language:higherKinds",
-                "-language:postfixOps",
-                "-feature",
-                "-Ypartial-unification",
-                "-Xfatal-warnings",
-            )
-        )
-
-
+  .in(file("protoExample"))
+  .settings(logSettings)
+  .settings(pluginExampleSettings)
+  .settings(catsSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.47deg" %% "pbdirect" % version.pbdirect,
+      "co.fs2" %% "fs2-core" % version.fs2
+    ))
+  .settings(
+    organization := "higherkindness",
+    name := "compendium-test",
+    scalaVersion := "2.12.10",
+    scalacOptions ++= Seq(
+      "-deprecation",
+      "-encoding",
+      "UTF-8",
+      "-language:higherKinds",
+      "-language:postfixOps",
+      "-feature",
+      "-Ypartial-unification",
+      "-Xfatal-warnings",
+    )
+  )
