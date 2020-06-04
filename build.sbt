@@ -1,7 +1,8 @@
 import higherkindness.mu.rpc.srcgen.Model.ExecutionMode.Compendium
-import higherkindness.mu.rpc.srcgen.Model.IdlType.Avro
+import higherkindness.mu.rpc.srcgen.Model.IdlType.{Avro, Proto}
 import higherkindness.mu.rpc.srcgen.Model.SerializationType
 import higherkindness.mu.rpc.srcgen.compendium.ProtocolAndVersion
+import sbt.addCompilerPlugin
 
 lazy val version = new {
   val cats: String = "2.1.0"
@@ -37,7 +38,8 @@ lazy val catsSettings = Seq(
 )
 
 lazy val pluginExampleSettings = Seq(
-  libraryDependencies += "com.nrinaudo" %% "kantan.csv" % version.kantan
+  libraryDependencies += "com.nrinaudo" %% "kantan.csv" % version.kantan,
+  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.patch)
 )
 
 lazy val avroExample: Project = project
@@ -46,12 +48,12 @@ lazy val avroExample: Project = project
   .settings(pluginExampleSettings)
   .settings(catsSettings)
   .settings(Seq(
-    muSrcGenIdlType:= Avro,
+    muSrcGenIdlType := Avro,
     muSrcGenSerializationType := SerializationType.Avro,
     muSrcGenExecutionMode := Compendium,
-    muSrcGenCompendiumProtocolIdentifiers := List(ProtocolAndVersion("shop",Some("1"))),
+    muSrcGenCompendiumProtocolIdentifiers := List(
+      ProtocolAndVersion("supplier", Some("1")),ProtocolAndVersion("sale", Some("1")),ProtocolAndVersion("material", Some("1"))),
     muSrcGenCompendiumServerUrl := "http://localhost:8080"
-
   ))
   .settings(
     organization := "higherkindness",
@@ -77,8 +79,17 @@ lazy val protoExample: Project = project
   .settings(
     libraryDependencies ++= Seq(
       "com.47deg" %% "pbdirect" % version.pbdirect,
-      "co.fs2" %% "fs2-core" % version.fs2
+      "co.fs2" %% "fs2-core" % version.fs2,
+      "io.higherkindness" %% "mu-rpc-service" % "0.22.1"
     ))
+  .settings(Seq(
+    muSrcGenIdlType := Proto,
+    muSrcGenSerializationType := SerializationType.Protobuf,
+    muSrcGenExecutionMode := Compendium,
+    muSrcGenCompendiumProtocolIdentifiers := List(
+      ProtocolAndVersion("shop", Some("1"))),
+    muSrcGenCompendiumServerUrl := "http://localhost:8080"
+  ))
   .settings(
     organization := "higherkindness",
     name := "compendium-test",
