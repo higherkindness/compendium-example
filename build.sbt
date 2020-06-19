@@ -15,7 +15,9 @@ lazy val version = new {
   val kantan: String = "0.6.0"
   val pbdirect: String = "0.4.1"
   val fs2 = "1.0.0"
+  val murpcservice = "0.22.1"
 }
+
 lazy val logSettings: Seq[Def.Setting[_]] = Seq(
   libraryDependencies ++= Seq(
     "ch.qos.logback" % "logback-classic" % version.logbackClassic,
@@ -39,7 +41,8 @@ lazy val catsSettings = Seq(
 
 lazy val pluginExampleSettings = Seq(
   libraryDependencies += "com.nrinaudo" %% "kantan.csv" % version.kantan,
-  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.patch)
+  addCompilerPlugin(
+    "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.patch)
 )
 
 lazy val avroExample: Project = project
@@ -52,7 +55,9 @@ lazy val avroExample: Project = project
     muSrcGenSerializationType := SerializationType.Avro,
     muSrcGenExecutionMode := Compendium,
     muSrcGenCompendiumProtocolIdentifiers := List(
-      ProtocolAndVersion("supplier", Some("1")),ProtocolAndVersion("sale", Some("1")),ProtocolAndVersion("material", Some("1"))),
+      ProtocolAndVersion("supplier", Some("1")),
+      ProtocolAndVersion("sale", Some("1")),
+      ProtocolAndVersion("material", Some("1"))),
     muSrcGenCompendiumServerUrl := "http://localhost:8080"
   ))
   .settings(
@@ -78,9 +83,9 @@ lazy val protoExample: Project = project
   .settings(catsSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.47deg" %% "pbdirect" % version.pbdirect,
       "co.fs2" %% "fs2-core" % version.fs2,
-      "io.higherkindness" %% "mu-rpc-service" % "0.22.1"
+      "com.47deg" %% "pbdirect" % version.pbdirect,
+      "io.higherkindness" %% "mu-rpc-service" % version.murpcservice
     ))
   .settings(Seq(
     muSrcGenIdlType := Proto,
