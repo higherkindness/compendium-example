@@ -43,6 +43,7 @@ lazy val pluginExampleSettings = Seq(
   libraryDependencies += "com.nrinaudo" %% "kantan.csv" % version.kantan,
   addCompilerPlugin(
     "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.patch)
+
 )
 
 lazy val avroExample: Project = project
@@ -50,6 +51,7 @@ lazy val avroExample: Project = project
   .settings(logSettings)
   .settings(pluginExampleSettings)
   .settings(catsSettings)
+  .enablePlugins(SrcGenPlugin)
   .settings(Seq(
     muSrcGenIdlType := Avro,
     muSrcGenSerializationType := SerializationType.Avro,
@@ -87,12 +89,42 @@ lazy val protoExample: Project = project
       "com.47deg" %% "pbdirect" % version.pbdirect,
       "io.higherkindness" %% "mu-rpc-service" % version.murpcservice
     ))
+  .enablePlugins(SrcGenPlugin)
   .settings(Seq(
     muSrcGenIdlType := Proto,
     muSrcGenSerializationType := SerializationType.Protobuf,
     muSrcGenExecutionMode := Compendium,
     muSrcGenCompendiumProtocolIdentifiers := List(
       ProtocolAndVersion("shop", Some("1"))),
+    muSrcGenCompendiumServerUrl := "http://localhost:8080"
+  ))
+  .settings(
+    organization := "higherkindness",
+    name := "compendium-test",
+    scalaVersion := "2.12.10",
+    scalacOptions ++= Seq(
+      "-deprecation",
+      "-encoding",
+      "UTF-8",
+      "-language:higherKinds",
+      "-language:postfixOps",
+      "-feature",
+      "-Ypartial-unification",
+      "-Xfatal-warnings",
+    )
+  )
+
+lazy val openAPIExample: Project = project
+  .in(file("openAPIExample"))
+  .settings(logSettings)
+  .settings(pluginExampleSettings)
+  .settings(catsSettings)
+  .enablePlugins(SrcGenPlugin)
+  .settings(Seq(
+    muSrcGenIdlType := higherkindness.mu.rpc.srcgen.Model.IdlType.OpenAPI,
+    muSrcGenExecutionMode := Compendium,
+    muSrcGenCompendiumProtocolIdentifiers := List(
+      ProtocolAndVersion("petstore", Some("1"))),
     muSrcGenCompendiumServerUrl := "http://localhost:8080"
   ))
   .settings(

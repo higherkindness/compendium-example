@@ -1,1 +1,1 @@
-addSbtPlugin("io.higherkindness" % "sbt-mu-srcgen" % "0.22.2")
+addSbtPlugin("io.higherkindness" % "sbt-mu-srcgen" % "0.23.0")
